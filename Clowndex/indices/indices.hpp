@@ -12,6 +12,6 @@
 #include <stdio.h>
 #include <fstream>
 #include <string>
-void createDirectIndices (std::ifstream, std::string);
-void createInvertIndices (std::string);
+void createDirectIndices ();
+void createInvertIndices ();
 #endif /* indices_hpp */
