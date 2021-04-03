@@ -25,6 +25,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		71713A7E26189F9E0027EE5F /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		71E55760261640E0005B5DC9 /* Clowndex */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Clowndex; sourceTree = BUILT_PRODUCTS_DIR; };
 		71E55763261640E0005B5DC9 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		71E5576B26164A02005B5DC9 /* DB */ = {isa = PBXFileReference; lastKnownFileType = folder; name = DB; path = Clowndex/DB; sourceTree = "<group>"; };
@@ -48,6 +49,7 @@
 		71E55757261640E0005B5DC9 = {
 			isa = PBXGroup;
 			children = (
+				71713A7E26189F9E0027EE5F /* .gitignore */,
 				71E5576B26164A02005B5DC9 /* DB */,
 				71E55762261640E0005B5DC9 /* Clowndex */,
 				71E55761261640E0005B5DC9 /* Products */,
