@@ -123,9 +123,10 @@ void createInvertIndices () {
         for (auto vecIt = it->second.begin(); vecIt != it->second.end(); vecIt++) {
             invIndex << *vecIt << " ";
         }
+        invIndex << ';';
         invIndex << std::endl;
     }
-    
+    invIndex << '.';
     std::cout << "Inverted Index file was succesfully created/changed" << std::endl;
 }
 
