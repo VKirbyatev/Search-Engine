@@ -26,8 +26,6 @@ void createDirectIndices () {
             std::cin >> answer;
             tolower(answer);
             if (answer != 'y')
-                filesCounter++;
-                fin = std::ifstream(getRootPath() + "/data/doc" + std::to_string(filesCounter) + ".txt");
                 continue;
         }
         //количество слов
@@ -41,7 +39,7 @@ void createDirectIndices () {
             numOfWords++;
             //to lower case
             std::transform(word.begin(), word.end(), word.begin(),
-                        [](unsigned char c){ return std::tolower(c); });
+                           [](unsigned char c){ if (c >= 65 && c <= 97) return (c+32); else return c + 0; });
             //убираем точки, запятые и пр
             word.erase (std::remove_if (word.begin (), word.end (), ispunct), word.end ());
             //вставляем в вектор, если такого слова еще нет
@@ -68,8 +66,9 @@ void createDirectIndices () {
 }
 
 void createInvertIndices () {
-    //контейнер с данными
-    std::map<std::string, std::vector<int>> words;
+//    setlocale(LC_ALL, "ru_RU");
+    //контейнер с данными где ключи - слова, значения map, где ключи - номер док-та, значеня - позиция слова в тексте
+    std::map<std::string, std::map<int, std::vector<int>>> words;
     //сюда пишем слова из файлов с прямыми индексами
     std::string word;
     //строим из прямых индексов обратные
@@ -79,6 +78,13 @@ void createInvertIndices () {
     //смотрим существует ли хотя бы 1 файл
     if (!index.is_open()) {
         std::cout << "Index files doesnt exist in this directory, use create dirInd fnc" << std::endl;
+        return;
+    }
+    //будем считывать еще сами документы, чтобы знать позицию слов в нем;
+    std::ifstream data(getRootPath() + "/data/doc" + std::to_string(count) + ".txt");
+    //смотрим существует ли хотя бы 1 файл
+    if (!data.is_open()) {
+        std::cout << "Data files doesnt exist in this directory" << std::endl;
         return;
     }
     //Проверка существования файла с индексами
@@ -96,14 +102,23 @@ void createInvertIndices () {
     while (index.is_open()) {
         //инициализируем
         while(index >> word) {
-            if (words.find(word) == words.end() ) {
-                //если такого слова нет, то добавляем ему вектор и пишем номер файла
-                words[word] = std::vector<int>(0);
-                words[word].push_back(count);
+            //ищем позиции
+            std::vector<int> pos(0);
+            std::string dataWord;
+            int textPosition = 0;
+            data = std::ifstream(getRootPath() + "/data/doc" + std::to_string(count) + ".txt");
+            while (data >> dataWord) {
+                //to lower case
+                std::transform(dataWord.begin(), dataWord.end(), dataWord.begin(),
+                                [](unsigned char c){ return std::tolower(c); });
+                //убираем точки, запятые и пр
+                dataWord.erase (std::remove_if (dataWord.begin (), dataWord.end (), ispunct), dataWord.end ());
+                //если слово из data совпадает с dirIndex, то добавляем позицию в массив
+                if (dataWord == word)
+                    pos.push_back(textPosition);
+                textPosition++;
             }
-            else
-                //если есть, то добавляем новый номер док-та
-                words[word].push_back(count);
+            words[word][count] = pos;
             //пропускаем цифры
             index >> word;
         }
@@ -120,8 +135,12 @@ void createInvertIndices () {
     //записываем
     for (auto it = words.begin(); it != words.end(); it++) {
         invIndex << it->first << " ";
-        for (auto vecIt = it->second.begin(); vecIt != it->second.end(); vecIt++) {
-            invIndex << *vecIt << " ";
+        for (auto secIt = it->second.begin(); secIt != it->second.end(); secIt++) {
+            invIndex << secIt->first << " [ ";
+            for (auto vecIt = secIt->second.begin(); vecIt != secIt->second.end(); vecIt++) {
+                invIndex << *vecIt << " ";
+            }
+            invIndex << "] ";
         }
         invIndex << ';';
         invIndex << std::endl;

@@ -37,14 +37,16 @@ std::map<double, std::string> getTFIDF (std::string phrase) {
     if (!dirInFile.is_open() || !invInFile.is_open()) {std::cout << "Couldnt find index files in root directory" << std::endl; return mapTFIDF;}
     
     //Загоним файл обратных индексов в структуру map, где key - слово, val - где встречаемтся
-    std::map<std::string, std::vector<int>> invInStruct;
-    std::vector<int> wasInDoc(0);
+    std::map<std::string, std::vector<int>> invInStruct; 
     std::string key, value;
     while (invInFile.is_open() && key != ".") {
+        std::vector<int> wasInDoc(0);
         invInFile >> key;
         invInFile >> value;
         while (value != ";" && value != "") {
             wasInDoc.push_back(std::stoi(value));
+            while (invInFile >> value)
+                if (value == "]") break;
             invInFile >> value;
         }
         invInStruct[key] = wasInDoc;
@@ -89,6 +91,7 @@ std::map<double, std::string> getTFIDF (std::string phrase) {
             TFIDF += TF*IDF;
         }
         //забиваем в структуру
+        TFIDF *= -1;
         if (TFIDF != 0)
         mapTFIDF[TFIDF] = std::to_string(filesCounter);
         //сбрасываем
@@ -99,7 +102,6 @@ std::map<double, std::string> getTFIDF (std::string phrase) {
         //читаем следующий файл
         dirInFile = std::ifstream(getRootPath() + "/directIndices/index" + std::to_string(filesCounter) + ".txt");
     }
-        
         
     return mapTFIDF;
 }
