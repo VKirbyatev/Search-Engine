@@ -11,17 +11,17 @@
 
 
 //Строим TDIDF для БД в map, где ключи - TF-IDF, значения - документы
-std::map<double, std::string> getTFIDF (std::string phrase) {
+std::map<double, std::string> getTFIDF (std::string request) {
     std::map<double, std::string> mapTFIDF;
     //проверим, что фраза не пустая
-    if (phrase.size() == 0) {
+    if (request.size() == 0) {
         std::cout << "Current phrase is empty" << std::endl;
         return mapTFIDF;
     }
     
     //Забиваем фразу в строковой поток, чтобы считывать ее по пробелами и закинем ее в структуру vector
     std::stringstream sstream;
-    sstream << phrase;
+    sstream << request;
     std::string word;
     std::vector<std::string> words(0);
     while (sstream >> word) {
