@@ -30,12 +30,6 @@ std::map<int, std::map<int, std::vector<int>>> searchByDistance (std::string req
         words.push_back(word);
     }
     
-    //Если только 1 слово, то дальше бессмысленно работать
-    if (words.size() == 1) {
-        std::cout << "There's only one word" << std::endl;
-        return summs;
-    }
-    
     //забиваем файл с обр индексами в структуру
     std::ifstream invInFile(getRootPath() + "/invertedIndices/invertedIndex.txt");
     std::map<std::string, std::map<int, std::vector<int>>> invInStruct;
@@ -86,7 +80,11 @@ std::map<int, std::map<int, std::vector<int>>> searchByDistance (std::string req
         mapTemp = findSumms(posTemp);
         //отсортируем позиции
         std::sort(mapTemp.begin()->second.begin(), mapTemp.begin()->second.end());
-        summs[mapTemp.begin()->first][intersecDocs[i]] = mapTemp.begin()->second;
+        //если дано только 1 слово
+        if (mapTemp.begin()->first == 0)
+            summs[mapTemp.begin()->first + i][intersecDocs[i]] = mapTemp.begin()->second;
+        else
+            summs[mapTemp.begin()->first][intersecDocs[i]] = mapTemp.begin()->second;
     }
     
     return summs;
