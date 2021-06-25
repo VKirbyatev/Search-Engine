@@ -1,9 +1,11 @@
 #include "indices.hpp"
+#include <algorithm>
 #include <fstream>
 #include <iostream>
+#include <map>
 #include <unistd.h>
 #include <vector>
-#include <map>
+
 #include "../fileSystemManager.hpp"
 
 //создать файс с прямыми индексами для 1 текстового файла

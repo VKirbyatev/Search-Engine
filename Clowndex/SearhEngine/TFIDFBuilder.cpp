@@ -84,7 +84,7 @@ std::map<double, std::string> getTFIDF (std::string request) {
             dirInFile >> value;
             dirIndexStruct[key] = value;
         }
-        //рассчитываем TF*IDF для всей фразы
+        //рассчитываем TF*IDF для всей фразыфыв
         for (auto i = 0; i < words.size(); i++) {
             double TF = 1.0*dirIndexStruct[words[i]]/wordsCounter;
             double IDF = log(1.0*documentsCounter/invInStruct[words[i]].size());

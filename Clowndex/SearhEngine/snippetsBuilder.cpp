@@ -1,13 +1,14 @@
 #include "snippetsBuilder.hpp"
-#include <string>
-#include <map>
-#include <vector>
-#include "seachByDistance.hpp"
-#include "TFIDFBuilder.hpp"
-#include <iostream>
-#include <fstream>
-#include <sstream>
 #include "../fileSystemManager.hpp"
+#include "TFIDFBuilder.hpp"
+#include "seachByDistance.hpp"
+#include <algorithm>
+#include <fstream>
+#include <iostream>
+#include <map>
+#include <sstream>
+#include <string>
+#include <vector>
 
 void printSnippetsByDistance (std::string request) {
     std::cout << "Результаты запроса для: \"" << request << "\" по сумме расстояний: " << std::endl;
